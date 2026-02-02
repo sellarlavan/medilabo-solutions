@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Détail patient</title>
+    <link rel="stylesheet" href="/styles.css" th:href="@{/styles.css}"/>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header">
+        <h1>MédiLabo Solutions</h1>
+        <p>Détails du patient</p>
+    </div>
+
+    <div class="card">
+        <h2 class="detail-title"
+            th:text="${patient.firstName} + ' ' + ${patient.lastName}">
+        </h2>
+
+        <div class="detail-grid">
+            <div class="kv">
+                <div class="k">Date de naissance</div>
+                <div class="v" th:text="${patient.birthDate}"></div>
+            </div>
+
+            <div class="kv">
+                <div class="k">Genre</div>
+                <div class="v" th:text="${patient.gender}"></div>
+            </div>
+
+            <div class="kv">
+                <div class="k">Téléphone</div>
+                <div class="v" th:text="${patient.phone} ?: '—'">—</div>
+            </div>
+
+            <div class="kv kv-full">
+                <div class="k">Adresse</div>
+                <div class="v" th:text="${patient.address} ?: '—'">—</div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a class="btn" th:href="@{/patients}">Retour</a>
+            <a class="btn btn-primary" th:href="@{'/patients/' + ${patient.id} + '/edit'}">Modifier</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
