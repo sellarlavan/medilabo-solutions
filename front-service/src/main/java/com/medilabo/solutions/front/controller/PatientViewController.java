@@ -52,8 +52,6 @@ public class PatientViewController {
 
     @GetMapping("/patients/{id}/edit")
     public String editPatientForm(@PathVariable Long id, Model model) {
-//        Map<String, Object> p = client.getPatientById(id);
-
         PatientDTO patientDTO = client.getPatientById(id);
 
         PatientForm form = new PatientForm();
