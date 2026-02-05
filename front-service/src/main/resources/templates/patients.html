@@ -15,7 +15,7 @@
     </div>
 
     <div class="list-wrap card">
-        <div style="display:grid; gap:12px;">
+        <div class="patient-list">
             <div class="patient-row" th:each="p : ${patients}">
                 <div class="patient-left">
                     <div class="patient-name"
@@ -29,7 +29,7 @@
                 <a class="btn btn-primary" th:href="@{'/patients/' + ${p.id}}">Voir</a>
             </div>
         </div>
-        <div style="display:flex; justify-content:center; margin-top:12px;">
+        <div class="list-footer">
             <a class="btn btn-primary" th:href="@{/patients/new}">Ajouter un patient</a>
         </div>
     </div>

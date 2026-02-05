@@ -47,6 +47,49 @@
         </div>
     </div>
 
+    <div class="card card-notes-spacing">
+        <h3 class="h3-notes-add">Ajouter une note</h3>
+
+        <form th:action="@{'/patients/' + ${patient.id} + '/notes'}"
+              method="post"
+              th:object="${noteForm}">
+
+            <div class="field">
+                <textarea th:field="*{note}"
+                          rows="5"
+                          placeholder="Saisir une note..."
+                          class="textarea-note"></textarea>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn btn-primary" type="submit">Enregistrer</button>
+            </div>
+        </form>
+
+        <h3 class="h3-notes-history">Historique des notes</h3>
+
+        <div th:if="${notes == null or #lists.isEmpty(notes)}" class="div-empty-notes">
+            Aucune note pour ce patient.
+        </div>
+
+        <div th:if="${notes != null and !#lists.isEmpty(notes)}" class="div-notes-list">
+            <div class="kv kv-full" th:each="n : ${notes}">
+                <div class="k" th:text="${n.patient}">Patient</div>
+
+                <div class="v v-note-content"
+                     th:text="${n.note}">Contenu note</div>
+
+                <div class="div-note-delete">
+                    <form th:action="@{'/patients/' + ${patient.id} + '/notes/' + ${n.id} + '/delete'}"
+                          method="post">
+                        <button class="btn" type="submit">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 </body>
 </html>

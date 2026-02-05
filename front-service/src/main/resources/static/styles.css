@@ -51,16 +51,12 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   padding: 10px 14px;
   border-radius: 12px;
-
   font-weight: 700;
   font-size: 14px;
-
   border: 1px solid #e5e7eb;
   background: #ffffff;
-
   transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
@@ -249,3 +245,63 @@ a {
     grid-column: auto;
   }
 }
+
+.card-notes-spacing {
+  margin-top: 16px;
+}
+
+.h3-notes-add {
+  margin: 0 0 12px 0;
+}
+
+.textarea-note {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  resize: vertical;
+}
+
+.h3-notes-history {
+  margin: 18px 0 12px 0;
+}
+
+.div-empty-notes {
+  color: #6b7280;
+}
+
+.div-notes-list {
+  display: grid;
+  gap: 12px;
+}
+
+.v-note-content {
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+
+.div-note-delete {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.patient-list {
+  display: grid;
+  gap: 12px;
+}
+
+.list-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+button.btn,
+a.btn,
+input.btn,
+input[type="submit"],
+button[type="submit"] {
+  cursor: pointer;
+}
+
