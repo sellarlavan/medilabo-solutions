@@ -39,6 +39,12 @@
                 <div class="k">Adresse</div>
                 <div class="v" th:text="${patient.address} ?: '—'">—</div>
             </div>
+
+            <div class="kv">
+                <div class="k">Risque diabète</div>
+                <div class="v" th:text="${riskLevel} ?: '—'">—</div>
+            </div>
+
         </div>
 
         <div class="card-footer">

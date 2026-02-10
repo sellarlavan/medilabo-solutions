@@ -1,0 +1,82 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: medilabo-mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:7
+    container_name: medilabo-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  patient-service:
+    build: ./patient-service
+    container_name: medilabo-patient-service
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+
+  note-service:
+    build: ./note-service
+    container_name: medilabo-note-service
+    environment:
+      MONGO_URI: ${MONGO_URI}
+    depends_on:
+      - mongodb
+    ports:
+      - "8083:8083"
+
+  assessment-service:
+    build: ./assessment-service
+    container_name: medilabo-assessment-service
+    environment:
+      GATEWAY_URL: ${GATEWAY_URL}
+      GATEWAY_USER: ${GATEWAY_USER}
+      GATEWAY_PASSWORD: ${GATEWAY_PASSWORD}
+    depends_on:
+      - patient-service
+      - note-service
+    ports:
+      - "8084:8084"
+
+  gateway-service:
+    build: ./gateway-service
+    container_name: medilabo-gateway-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - patient-service
+      - note-service
+      - assessment-service
+
+  front-service:
+    build: ./front-service
+    container_name: medilabo-front-service
+    environment:
+      GATEWAY_URL: ${GATEWAY_URL}
+      GATEWAY_USER: ${GATEWAY_USER}
+      GATEWAY_PASSWORD: ${GATEWAY_PASSWORD}
+    depends_on:
+      - gateway-service
+    ports:
+      - "8082:8082"
+
+volumes:
+  mysql_data:
+  mongo_data:

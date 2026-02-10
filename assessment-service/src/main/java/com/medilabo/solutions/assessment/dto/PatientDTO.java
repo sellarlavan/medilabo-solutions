@@ -1,6 +1,8 @@
-package com.medilabo.solutions.front.dto;
+package com.medilabo.solutions.assessment.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 

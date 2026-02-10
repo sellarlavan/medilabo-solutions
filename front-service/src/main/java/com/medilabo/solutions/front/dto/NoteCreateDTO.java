@@ -1,13 +1,12 @@
 package com.medilabo.solutions.front.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoteForm {
-
-    @NotBlank
+public class NoteCreateDTO {
+    private Long patId;
+    private String patient;
     private String note;
 }

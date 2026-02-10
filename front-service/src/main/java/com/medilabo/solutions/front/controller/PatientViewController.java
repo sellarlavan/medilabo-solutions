@@ -1,9 +1,9 @@
 package com.medilabo.solutions.front.controller;
 
-import com.medilabo.solutions.front.dto.NoteForm;
-import com.medilabo.solutions.front.dto.PatientDTO;
-import com.medilabo.solutions.front.service.GatewayNoteClient;
-import com.medilabo.solutions.front.service.GatewayPatientClient;
+import com.medilabo.solutions.front.client.AssessmentClient;
+import com.medilabo.solutions.front.client.NoteClient;
+import com.medilabo.solutions.front.client.PatientClient;
+import com.medilabo.solutions.front.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +17,14 @@ import java.util.List;
 @Controller
 public class PatientViewController {
 
-    private final GatewayPatientClient patientClient;
-    private final GatewayNoteClient noteClient;
+    private final PatientClient patientClient;
+    private final NoteClient noteClient;
+    private final AssessmentClient assessmentClient;
 
-    public PatientViewController(GatewayPatientClient patientClient, GatewayNoteClient noteClient) {
+    public PatientViewController(PatientClient patientClient, NoteClient noteClient, AssessmentClient assessmentClient) {
         this.patientClient = patientClient;
         this.noteClient = noteClient;
+        this.assessmentClient = assessmentClient;
     }
 
     @GetMapping("/")
@@ -39,11 +41,13 @@ public class PatientViewController {
     @GetMapping("/patients/{id}")
     public String patientDetail(@PathVariable Long id, Model model) {
         PatientDTO patient = patientClient.getPatientById(id);
-        List<?> notes = noteClient.getNotesByPatient(id);
+        List<NoteDTO> notes = noteClient.getNotesByPatient(id);
+        AssessmentDTO assessment = assessmentClient.getAssessment(id);
 
         model.addAttribute("patient", patient);
         model.addAttribute("notes", notes);
         model.addAttribute("noteForm", new NoteForm());
+        model.addAttribute("riskLevel", assessment.getRiskLevel());
 
         return "patient-detail";
     }
@@ -52,17 +56,18 @@ public class PatientViewController {
     public String addNote(@PathVariable Long id,
                           @Valid @ModelAttribute("noteForm") NoteForm form,
                           BindingResult binding,
-                          RedirectAttributes ra) {
+                          RedirectAttributes redirectAttributes) {
 
         if (binding.hasErrors()) {
-            ra.addFlashAttribute("noteError", "La note ne peut pas être vide.");
+            redirectAttributes.addFlashAttribute("noteError", "La note ne peut pas être vide.");
             return "redirect:/patients/" + id;
         }
 
         PatientDTO patient = patientClient.getPatientById(id);
         String patientLabel = patient.getLastName();
 
-        noteClient.createNote(id, patientLabel, form.getNote());
+        NoteCreateDTO noteCreateDTO = new NoteCreateDTO(id, patientLabel, form.getNote());
+        noteClient.createNote(noteCreateDTO);
         return "redirect:/patients/" + id;
     }
 

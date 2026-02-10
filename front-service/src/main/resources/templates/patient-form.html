@@ -54,7 +54,8 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-ghost" th:href="@{/patients}">Annuler</a>
+
+                <a class="btn btn-ghost" th:href="@{/patients/{id}(id=${patientId})}">Annuler</a>
                 <button class="btn btn-primary" type="submit"
                         th:text="${mode == 'create'} ? 'Ajouter' : 'Enregistrer'">
                     Ajouter
@@ -63,7 +64,6 @@
 
         </form>
     </div>
-
 </div>
 </body>
 </html>
